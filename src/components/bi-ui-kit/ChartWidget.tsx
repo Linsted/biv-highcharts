@@ -9,7 +9,8 @@ export interface ChartWidgetProps {
   isError: boolean;
   data: any[];
   dataKey: string; // e.g., 'sales' or 'users'
-  variant?: "column" | "bar" | "pie" | "line"; // Add 'line' variant
+  variant?: "column" | "bar" | "pie" | "line" | "group-bar";
+  groupData?: { users?: any[]; sales?: any[] };
 }
 
 export const ChartWidget = ({
@@ -18,7 +19,8 @@ export const ChartWidget = ({
   isError,
   data,
   dataKey,
-  variant = "column", // Default to column
+  variant = "column",
+  groupData,
 }: ChartWidgetProps) => {
   const chartOptions = useMemo(() => {
     if (variant === "pie") {
@@ -31,6 +33,25 @@ export const ChartWidget = ({
             data:
               data?.map((item) => ({ name: item.name, y: item[dataKey] })) ||
               [],
+          },
+        ],
+        credits: { enabled: false },
+      };
+    }
+    if (variant === "group-bar" && groupData) {
+      return {
+        chart: { type: "bar" },
+        title: { text: null },
+        xAxis: { categories: data?.map((item) => item.name) || [] },
+        yAxis: { title: { text: "Value" } },
+        series: [
+          {
+            name: "Sales",
+            data: groupData.sales?.map((item) => item.sales) || [],
+          },
+          {
+            name: "Users",
+            data: groupData.users?.map((item) => item.users) || [],
           },
         ],
         credits: { enabled: false },
@@ -50,7 +71,7 @@ export const ChartWidget = ({
       ],
       credits: { enabled: false },
     };
-  }, [data, dataKey, variant]);
+  }, [data, dataKey, variant, groupData]);
 
   if (isLoading) {
     return (

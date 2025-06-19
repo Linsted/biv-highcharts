@@ -1,10 +1,10 @@
 // MyDashboardPage.tsx
 import { useState } from "react";
-import type { ChartWidgetProps } from "../components/bi-ui-kit/ChartWidget";
 import { ChartWidget } from "../components/bi-ui-kit/ChartWidget";
 import { DashboardGrid } from "../components/bi-ui-kit/DashboardGrid";
 import { TimePeriodSelector } from "../components/filters/TimePeriodSelector";
 import { useVisualizationData } from "../hooks/data-adapters/useVisualizationData";
+import type { ChartWidgetProps } from "../components/bi-ui-kit/ChartWidget";
 
 export const MyDashboardPage = () => {
   const [timePeriod, setTimePeriod] = useState("LAST_7_DAYS");
@@ -98,6 +98,17 @@ export const MyDashboardPage = () => {
       dataKey: "users",
       variant: "bar",
     },
+    {
+      key: "group-bar",
+      title: "Sales vs Users (Group Bar)",
+      query: salesQuery,
+      dataKey: "sales",
+      variant: "group-bar",
+      groupData: {
+        sales: Array.isArray(salesQuery.data) ? salesQuery.data : [],
+        users: Array.isArray(usersQuery.data) ? usersQuery.data : [],
+      },
+    },
   ];
 
   return (
@@ -109,11 +120,12 @@ export const MyDashboardPage = () => {
           <ChartWidget
             key={cfg.key}
             title={cfg.title}
-            isLoading={cfg.query.isLoading}
-            isError={!!cfg.query.error}
+            isLoading={!!cfg.query.isLoading || !!(cfg.groupData && usersQuery.isLoading)}
+            isError={!!cfg.query.error || !!(cfg.groupData && usersQuery.error)}
             data={Array.isArray(cfg.query.data) ? cfg.query.data : []}
             dataKey={cfg.dataKey}
             variant={cfg.variant as ChartWidgetProps["variant"]}
+            groupData={cfg.groupData}
           />
         ))}
       </DashboardGrid>
