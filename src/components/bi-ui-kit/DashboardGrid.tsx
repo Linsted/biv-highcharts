@@ -8,13 +8,14 @@ interface DashboardGridProps {
 
 export const DashboardGrid = ({ children }: DashboardGridProps) => {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 24, justifyContent: 'center' }}>
       {children.map((child, idx) => (
         <div
           key={idx}
           style={{
-            flex: "1 1 45%",
-            minWidth: 350,
+            flex: "1 1 30%",
+            maxWidth: "33.33%",
+            minWidth: 300,
             minHeight: 320,
             boxSizing: "border-box",
           }}
