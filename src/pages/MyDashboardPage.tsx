@@ -7,7 +7,7 @@ import { TimePeriodSelector } from "../components/filters/TimePeriodSelector";
 import { useVisualizationData } from "../hooks/data-adapters/useVisualizationData";
 
 export const MyDashboardPage = () => {
-  const [timePeriod, setTimePeriod] = useState("LAST_7_DAYS");
+  const [timePeriod, setTimePeriod] = useState("LAST_30_DAYS");
 
   const salesQuery = useVisualizationData({ metricId: "sales", timePeriod });
   const usersQuery = useVisualizationData({ metricId: "users", timePeriod });
