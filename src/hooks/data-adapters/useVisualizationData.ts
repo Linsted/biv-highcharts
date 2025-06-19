@@ -7,6 +7,5 @@ export const useVisualizationData = (config: VisualizationConfig) => {
   return useQuery({
     queryKey: ["visualizationData", config],
     queryFn: () => fetcher(config),
-    keepPreviousData: true,
   });
 };
