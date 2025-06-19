@@ -3,25 +3,19 @@ export interface VisualizationConfig {
   timePeriod: string; // e.g., 'LAST_7_DAYS', 'LAST_30_DAYS'
 }
 
-const salesData = [
-  { name: "Day 1", sales: 4000 },
-  { name: "Day 2", sales: 3000 },
-  { name: "Day 3", sales: 5000 },
-  { name: "Day 4", sales: 4500 },
-  { name: "Day 5", sales: 6000 },
-  { name: "Day 6", sales: 5500 },
-  { name: "Day 7", sales: 7000 },
-];
+// Generate 30 days of mock data
+type SalesDatum = { name: string; sales: number };
+type UsersDatum = { name: string; users: number };
 
-const usersData = [
-  { name: "Day 1", users: 120 },
-  { name: "Day 2", users: 150 },
-  { name: "Day 3", users: 110 },
-  { name: "Day 4", users: 180 },
-  { name: "Day 5", users: 210 },
-  { name: "Day 6", users: 190 },
-  { name: "Day 7", users: 230 },
-];
+const salesData: SalesDatum[] = Array.from({ length: 30 }, (_, i) => ({
+  name: `Day ${i + 1}`,
+  sales: 3000 + Math.round(Math.random() * 4000),
+}));
+
+const usersData: UsersDatum[] = Array.from({ length: 30 }, (_, i) => ({
+  name: `Day ${i + 1}`,
+  users: 100 + Math.round(Math.random() * 150),
+}));
 
 export const fetchMockData = async (
   config: VisualizationConfig
@@ -33,6 +27,12 @@ export const fetchMockData = async (
 
   if (config.timePeriod === "LAST_3_DAYS") {
     return data.slice(-3);
+  }
+  if (config.timePeriod === "LAST_7_DAYS") {
+    return data.slice(-7);
+  }
+  if (config.timePeriod === "LAST_30_DAYS") {
+    return data;
   }
   return data;
 };
