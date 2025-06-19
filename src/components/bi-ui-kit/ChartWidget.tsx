@@ -3,7 +3,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useMemo } from "react";
 
-interface ChartWidgetProps {
+export interface ChartWidgetProps {
   title: string;
   isLoading: boolean;
   isError: boolean;
